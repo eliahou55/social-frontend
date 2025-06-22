@@ -1,0 +1,204 @@
+/* Profil général */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f3f4f6;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+/* Conteneur principal */
+.p-4 {
+  padding: 1rem;
+}
+
+.max-w-xl {
+  max-width: 768px;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Cartes */
+.bg-white {
+  background-color: white;
+}
+
+.shadow {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.rounded {
+  border-radius: 0.5rem;
+}
+
+.space-y-2 > * + * {
+  margin-top: 0.5rem;
+}
+
+.space-y-4 > * + * {
+  margin-top: 1rem;
+}
+
+/* Avatar profil */
+.avatar-wrapper {
+  width: 120px;
+  height: 120px;
+  border-radius: 9999px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  margin: 0 auto;
+}
+
+.avatar-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Formulaires */
+input[type="text"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+}
+
+input[type="file"] {
+  margin-top: 0.25rem;
+}
+
+/* Boutons */
+button {
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+button.bg-blue-500 {
+  background-color: #3b82f6;
+}
+
+button.bg-blue-500:hover {
+  background-color: #2563eb;
+}
+
+button.bg-green-500 {
+  background-color: #10b981;
+}
+
+button.bg-green-500:hover {
+  background-color: #059669;
+}
+
+button.bg-gray-500 {
+  background-color: #6b7280;
+}
+
+button.bg-gray-500:hover {
+  background-color: #4b5563;
+}
+
+/* Galerie médias */
+.gallery-section {
+  margin-top: 2rem;
+}
+
+.media-toggle {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1.5rem; /* 👈 espacement sous les boutons */
+}
+
+.media-toggle button {
+  padding: 0.5rem 1rem;
+  background-color: #e5e7eb;
+  border: none;
+  border-radius: 0.375rem;
+}
+
+.media-toggle button.active {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+.media-item {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 0.375rem;
+}
+
+/* Formulaire d'ajout de média */
+.add-media-section {
+  margin-top: 2rem; /* 👈 espacement au-dessus du bouton */
+}
+
+.add-media-section form {
+  background-color: #f9fafb;
+}
+
+.add-media-section label {
+  font-weight: 600;
+}
+
+.add-media-section input,
+.add-media-section select {
+  width: 100%;
+}
+
+/* Réactivité */
+@media (max-width: 600px) {
+  .media-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .media-toggle {
+    flex-direction: column;
+  }
+}
+
+/* Nouveau style Apple glass */
+.profile-glass {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 800px;
+  color: #fff;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+/* Pour éviter que le bouton colle au texte */
+.profile-info button {
+  margin-top: 1rem;
+}
