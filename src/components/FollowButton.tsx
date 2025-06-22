@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+const apiUrl = import.meta.env.VITE_API_URL;
+
 
 type FollowButtonProps = {
   targetUserId: number;
   isPrivate: boolean;
 };
 
-const backend = 'http://localhost:3000'; // 👈 URL du backend Express
+const backend = apiUrl;
+ // 👈 URL du backend Express
 
 const FollowButton: React.FC<FollowButtonProps> = ({ targetUserId, isPrivate }) => {
   const [isFollowing, setIsFollowing] = useState<boolean | null>(null);

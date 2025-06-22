@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export default function Verify() {
   const navigate = useNavigate();
   const email = localStorage.getItem('pendingEmail') || '';
@@ -27,7 +29,7 @@ export default function Verify() {
     if (code.length !== 4) return setMsg('Veuillez entrer les 4 chiffres');
 
     try {
-      const res = await fetch('http://localhost:3000/api/verify', {
+      const res = await fetch(`${apiUrl}/api/verify`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, code }),
@@ -41,7 +43,6 @@ export default function Verify() {
         localStorage.removeItem('pendingEmail');
         localStorage.setItem('token', data.token);
         localStorage.setItem('username', data.user.username);
-
         setMsg('✅ Code validé, redirection...');
         setTimeout(() => navigate('/home'), 1200);
       }
@@ -57,26 +58,24 @@ export default function Verify() {
 
       <form onSubmit={handleSubmit}>
         <div style={{ display: 'flex', gap: 10, justifyContent: 'center', marginBottom: 20 }}>
-        {[0, 1, 2, 3].map(i => (
-  <input
-    key={i}
-    ref={el => {
-      inputs.current[i] = el;
-    }}
-    type="text"
-    maxLength={1}
-    value={digits[i]}
-    onChange={e => handleChange(i, e.target.value)}
-    style={{
-      width: 50,
-      height: 60,
-      fontSize: 32,
-      textAlign: 'center',
-    }}
-  />
-))}
-
-            
+          {[0, 1, 2, 3].map(i => (
+            <input
+              key={i}
+              ref={el => {
+                inputs.current[i] = el;
+              }}
+              type="text"
+              maxLength={1}
+              value={digits[i]}
+              onChange={e => handleChange(i, e.target.value)}
+              style={{
+                width: 50,
+                height: 60,
+                fontSize: 32,
+                textAlign: 'center',
+              }}
+            />
+          ))}
         </div>
         <button type="submit" style={{ width: '100%' }}>Valider</button>
       </form>

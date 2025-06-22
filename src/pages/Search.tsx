@@ -10,6 +10,8 @@ interface User {
   bio?: string;
 }
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 function Search() {
   const [searchTerm, setSearchTerm] = useState('');
   const [users, setUsers] = useState<User[]>([]);
@@ -31,7 +33,7 @@ function Search() {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch(`http://localhost:3000/api/users/search?q=${searchTerm}`, {
+      const response = await fetch(`${apiUrl}/api/users/search?q=${searchTerm}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

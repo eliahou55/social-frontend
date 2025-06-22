@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import '../style/FriendRequests.css';
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 interface RequestUser {
   id: number;
   username: string;
@@ -24,10 +26,10 @@ const FriendRequests: React.FC = () => {
     const fetchAll = async () => {
       const token = localStorage.getItem('token');
       const [reqRes, friendsRes] = await Promise.all([
-        fetch('http://localhost:3000/api/friends/requests', {
+        fetch(`${apiUrl}/api/friends/requests`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        fetch('http://localhost:3000/api/friends/list', {
+        fetch(`${apiUrl}/api/friends/list`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ]);
@@ -46,7 +48,7 @@ const FriendRequests: React.FC = () => {
   const respondToRequest = async (id: number, action: 'accept' | 'decline') => {
     const token = localStorage.getItem('token');
 
-    const res = await fetch('http://localhost:3000/api/friends/respond', {
+    const res = await fetch(`${apiUrl}/api/friends/respond`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,

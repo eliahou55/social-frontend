@@ -4,6 +4,8 @@ import Navbar from '../components/Navbar';
 import FollowButton from '../components/FollowButton';
 import '../style/Profile.css';
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 interface Media {
   id: number;
   url: string;
@@ -36,7 +38,7 @@ const ProfilePublic: React.FC = () => {
     const fetchProfile = async () => {
       const token = localStorage.getItem('token');
       try {
-        const res = await fetch(`http://localhost:3000/api/user/user/${username}`, {
+        const res = await fetch(`${apiUrl}/api/user/user/${username}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -68,7 +70,7 @@ const ProfilePublic: React.FC = () => {
   const sendFriendRequest = async () => {
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch('http://localhost:3000/api/friends/request', {
+      const res = await fetch(`${apiUrl}/api/friends/request`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -99,12 +101,10 @@ const ProfilePublic: React.FC = () => {
         <h1 className="text-2xl font-bold mb-4 text-center">Profil de @{profile.username}</h1>
 
         <div className="profile-glass space-y-4">
-          {/* Avatar arrondi */}
           <div className="avatar-wrapper">
             <img src={profile.avatarUrl || '/default-avatar.png'} alt="avatar" />
           </div>
 
-          {/* Statistiques abonnés / abonnements */}
           <div className="flex justify-center gap-6 text-center text-gray-700">
             <div>
               <div className="text-xl font-bold">{profile.followersCount ?? 0}</div>
@@ -116,7 +116,6 @@ const ProfilePublic: React.FC = () => {
             </div>
           </div>
 
-          {/* 💬 Bouton message si autorisé */}
           {canMessage && (
             <button
               className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full"
@@ -126,12 +125,10 @@ const ProfilePublic: React.FC = () => {
             </button>
           )}
 
-          {/* 🔁 FollowButton si public et pas encore ami */}
           {!profile.isPrivate && !profile.isFriend && (
             <FollowButton targetUserId={profile.id} isPrivate={false} />
           )}
 
-          {/* ➕ Demande d’ami (pour profils privés) */}
           {profile.isPrivate && !canMessage && !requestSent && !hasPendingRequest && (
             <button
               onClick={sendFriendRequest}
@@ -141,17 +138,14 @@ const ProfilePublic: React.FC = () => {
             </button>
           )}
 
-          {/* ⏳ Demande déjà en attente */}
           {profile.isPrivate && !canMessage && (requestSent || hasPendingRequest) && (
             <p className="text-yellow-500 text-center italic">Demande en attente... ⏳</p>
           )}
 
-          {/* Bio visible */}
           {profile.bio && (
             <p><strong>Bio :</strong> {profile.bio}</p>
           )}
 
-          {/* Médias */}
           <div className="media-grid">
             {profile.medias?.map((media) =>
               media.type === 'image' ? (

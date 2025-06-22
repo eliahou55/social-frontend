@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import Navbar from '../components/Navbar'; // ✅ ajouté ici
+import Navbar from '../components/Navbar';
 import '../style/Messages.css';
+
+const apiUrl = import.meta.env.VITE_API_URL;
 
 interface Message {
   id: number;
@@ -37,7 +39,7 @@ const Messages: React.FC = () => {
   useEffect(() => {
     const fetchConversations = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/messages/conversations', {
+        const res = await fetch(`${apiUrl}/api/messages/conversations`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -80,7 +82,7 @@ const Messages: React.FC = () => {
 
   const fetchMessages = async (friendId: number) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/messages/${friendId}`, {
+      const res = await fetch(`${apiUrl}/api/messages/${friendId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Erreur chargement messages');
@@ -101,7 +103,7 @@ const Messages: React.FC = () => {
     if (!newMessage.trim() || !selected) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/api/messages/send`, {
+      const res = await fetch(`${apiUrl}/api/messages/send`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -124,7 +126,7 @@ const Messages: React.FC = () => {
     if (!search.trim()) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/api/user/user/${search}`, {
+      const res = await fetch(`${apiUrl}/api/user/user/${search}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -156,7 +158,7 @@ const Messages: React.FC = () => {
   const sendFriendRequest = async () => {
     if (!selected) return;
     try {
-      const res = await fetch(`http://localhost:3000/api/user/friends/request`, {
+      const res = await fetch(`${apiUrl}/api/user/friends/request`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -176,7 +178,7 @@ const Messages: React.FC = () => {
 
   return (
     <>
-      <Navbar /> {/* ✅ On ajoute ici la navbar */}
+      <Navbar />
       <div className="messaging-container">
         <aside className="sidebar">
           <h2>💬 Discussions</h2>

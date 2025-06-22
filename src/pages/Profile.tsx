@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import '../style/Profile.css';
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 interface Media {
   id: number;
   url: string;
@@ -38,7 +40,7 @@ const Profile: React.FC = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:3000/api/me', {
+      const res = await fetch(`${apiUrl}/api/me`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -70,7 +72,7 @@ const Profile: React.FC = () => {
       const uploadForm = new FormData();
       uploadForm.append('file', avatarFile);
 
-      const resUpload = await fetch('http://localhost:3000/api/upload', {
+      const resUpload = await fetch(`${apiUrl}/api/upload`, {
         method: 'POST',
         body: uploadForm,
       });
@@ -84,7 +86,7 @@ const Profile: React.FC = () => {
       }
     }
 
-    const res = await fetch('http://localhost:3000/api/user/update', {
+    const res = await fetch(`${apiUrl}/api/user/update`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -113,14 +115,14 @@ const Profile: React.FC = () => {
     const formDataUpload = new FormData();
     formDataUpload.append('file', mediaFile);
 
-    const uploadRes = await fetch('http://localhost:3000/api/upload', {
+    const uploadRes = await fetch(`${apiUrl}/api/upload`, {
       method: 'POST',
       body: formDataUpload,
     });
 
     const { url } = await uploadRes.json();
 
-    const res = await fetch('http://localhost:3000/api/user/media/add', {
+    const res = await fetch(`${apiUrl}/api/user/media/add`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -161,7 +163,6 @@ const Profile: React.FC = () => {
                 <p><strong>Bio :</strong> {profile.bio || 'Aucune bio renseignée'}</p>
                 <p><strong>Privé :</strong> {profile.isPrivate ? 'Oui' : 'Non'}</p>
 
-                {/* Abonnés / abonnements */}
                 <div className="flex gap-6 mt-3 text-center text-gray-700">
                   <div>
                     <div className="text-xl font-bold">{profile.followersCount ?? 0}</div>
@@ -238,19 +239,12 @@ const Profile: React.FC = () => {
           </form>
         )}
 
-        {/* Galerie des médias */}
         <div className="gallery-section mt-6">
           <div className="media-toggle mb-3">
-            <button
-              className={mediaType === 'image' ? 'active' : ''}
-              onClick={() => setMediaType('image')}
-            >
+            <button className={mediaType === 'image' ? 'active' : ''} onClick={() => setMediaType('image')}>
               🖼️ Photos
             </button>
-            <button
-              className={mediaType === 'video' ? 'active' : ''}
-              onClick={() => setMediaType('video')}
-            >
+            <button className={mediaType === 'video' ? 'active' : ''} onClick={() => setMediaType('video')}>
               🎥 Vidéos
             </button>
           </div>
@@ -270,7 +264,6 @@ const Profile: React.FC = () => {
           </div>
         </div>
 
-        {/* Ajout d’un média */}
         <div className="add-media-section mt-6">
           {!showMediaForm ? (
             <button

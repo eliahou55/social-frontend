@@ -4,6 +4,8 @@ import '../style/Feed.css';
 import Navbar from '../components/Navbar';
 import { FaCommentDots, FaHeart, FaRegHeart } from 'react-icons/fa';
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 interface Post {
   id: number;
   content: string;
@@ -45,16 +47,16 @@ function Feed() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/posts')
+    fetch(`${apiUrl}/api/posts`)
       .then((res) => res.json())
       .then((data) => setPosts(data));
 
     if (token) {
-      fetch('http://localhost:3000/api/likes', {
-        headers: { Authorization: `Bearer ${token}` }
+      fetch(`${apiUrl}/api/likes`, {
+        headers: { Authorization: `Bearer ${token}` },
       })
-        .then(res => res.json())
-        .then(data => setLikedPosts(data.likedPostIds));
+        .then((res) => res.json())
+        .then((data) => setLikedPosts(data.likedPostIds));
     }
   }, []);
 
@@ -84,7 +86,7 @@ function Feed() {
       formData.append('file', mediaFile);
 
       try {
-        const uploadRes = await fetch('http://localhost:3000/api/upload', {
+        const uploadRes = await fetch(`${apiUrl}/api/upload`, {
           method: 'POST',
           body: formData,
         });
@@ -98,7 +100,7 @@ function Feed() {
     }
 
     try {
-      const res = await fetch('http://localhost:3000/api/posts', {
+      const res = await fetch(`${apiUrl}/api/posts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -126,7 +128,7 @@ function Feed() {
 
   const openCommentModal = async (postId: number) => {
     setSelectedPostId(postId);
-    const res = await fetch(`http://localhost:3000/api/posts/${postId}/comments`);
+    const res = await fetch(`${apiUrl}/api/posts/${postId}/comments`);
     const data = await res.json();
     setComments(data);
   };
@@ -134,7 +136,7 @@ function Feed() {
   const submitComment = async () => {
     if (!newComment.trim() || !selectedPostId) return;
 
-    const res = await fetch(`http://localhost:3000/api/posts/${selectedPostId}/comments`, {
+    const res = await fetch(`${apiUrl}/api/posts/${selectedPostId}/comments`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -152,7 +154,7 @@ function Feed() {
 
   const toggleLike = async (postId: number) => {
     const liked = likedPosts.includes(postId);
-    const url = `http://localhost:3000/api/likes/${postId}`;
+    const url = `${apiUrl}/api/likes/${postId}`;
     const method = liked ? 'DELETE' : 'POST';
 
     const res = await fetch(url, {
@@ -171,12 +173,12 @@ function Feed() {
         prevPosts.map((post) =>
           post.id === postId
             ? {
-              ...post,
-              _count: {
-                likes: post._count.likes + (liked ? -1 : 1),
-                comments: post._count.comments,
-              },
-            }
+                ...post,
+                _count: {
+                  likes: post._count.likes + (liked ? -1 : 1),
+                  comments: post._count.comments,
+                },
+              }
             : post
         )
       );
@@ -192,7 +194,11 @@ function Feed() {
             <strong
               className="post-author-link"
               onClick={() =>
-                navigate(post.author.username === currentUsername ? '/profile' : `/profile/${post.author.username}`)
+                navigate(
+                  post.author.username === currentUsername
+                    ? '/profile'
+                    : `/profile/${post.author.username}`
+                )
               }
               style={{ cursor: 'pointer' }}
             >

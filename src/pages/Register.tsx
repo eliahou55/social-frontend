@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../style/Register.css';
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 function Register() {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -13,7 +15,7 @@ function Register() {
     e.preventDefault();
 
     try {
-      const res = await fetch('http://localhost:3000/api/register', {
+      const res = await fetch(`${apiUrl}/api/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, username, password }),
@@ -63,12 +65,14 @@ function Register() {
       </form>
 
       {message && <p className="message">{message}</p>}
+
       <p style={{ marginTop: '20px', textAlign: 'center' }}>
-        Vous avez déjà un compte ?{' '}
-        <a href="/login">Me connecter</a>
+        Vous avez déjà un compte ? <a href="/login">Me connecter</a>
       </p>
 
-      <p className="info-text">🚀 Social World te permet de partager, discuter et découvrir de nouvelles personnes en toute simplicité.</p>
+      <p className="info-text">
+        🚀 Social World te permet de partager, discuter et découvrir de nouvelles personnes en toute simplicité.
+      </p>
     </div>
   );
 }
